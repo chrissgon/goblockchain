@@ -6,8 +6,8 @@ Description.
 
 ## 🌍 Translations
 
-- [English](https://github.com/chrissgon/myrepo/blob/main/README.md)
-- [Português Brasileiro](https://github.com/chrissgon/myrepo/blob/main/README-pt-BR.md)
+- [English](https://github.com/chrissgon/goblockchain/blob/main/README.md)
+- [Português Brasileiro](https://github.com/chrissgon/goblockchain/blob/main/README-pt-BR.md)
 
 ## ⚠️ Requirements
 
@@ -18,7 +18,7 @@ This project requires the ... installed.
 - Clone the repository.
 
 ```bash
-git clone git@github.com:chrissgon/myrepo.git
+git clone git@github.com:chrissgon/goblockchain.git
 ```
 
 ## 🚀 Quick Start
