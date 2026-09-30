@@ -1,5 +1,7 @@
 # goblockchain
 
+[Leia em português](README-pt-BR.md)
+
 A small educational blockchain in Go: blocks linked by SHA-256 hashes, a proof-of-work miner, and an HTTP API to mine blocks and read the chain. It uses only the Go standard library.
 
 The project is not finished. What it implements works and is covered by tests; the list of what is missing is below.
@@ -50,7 +52,7 @@ curl http://localhost:8090/chain
 
 ## 🚧 What is missing
 
-- **Transactions.** `/mine` always creates a block with empty data (`data := ""` in `main.go`); there is no way to submit data or transactions.
+- **Transactions.** `/mine` always creates a block with empty data (`data := ""` in `server.go`); there is no way to submit data or transactions.
 - **Network between nodes.** There is a single in-memory chain; no peers, no chain exchange, no consensus between nodes.
 - **Persistence.** The chain lives in memory and is lost when the process stops.
 - **Full chain validation.** `CheckChain` checks only the previous-hash links; it does not recompute each block's hash or its proof of work.
