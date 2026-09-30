@@ -46,7 +46,7 @@ curl http://localhost:8090/chain
 | Hashing | `helpers.go`: `GetBlockData`, `NewStringSHA256` | The hash is the SHA-256 of the block's JSON without the hash field. |
 | Chain | `blockchain.go`: `NewBlockchain`, `Mine`, `CheckChain` | Starts with a genesis block. `Mine` runs the miner, checks the proof, the chain links and the block hash, then appends the block. `CheckChain` verifies that each block's previous hash equals the hash of the block before it. |
 | Proof of work | `miner.go`: `NewPoW`, `PoW.Mine`, `PoW.Check` | Increments the nonce until the hash starts with `difficulty` zeros, and stops with `nonce limit exceeded` when the nonce reaches the limit. |
-| HTTP API | `main.go` | `GET /mine` mines a block with empty data; `GET /chain` validates and returns the chain. The miner is created with difficulty 1 and a nonce limit of 50. |
+| HTTP API | `main.go`, `server.go`: `newServer` | `GET /mine` mines a block with empty data; `GET /chain` validates and returns the chain. The miner is created with difficulty 1 and a nonce limit of 50. A mutex in `server` serializes the requests, so concurrent `/mine` calls each append one block linked to the one before. |
 
 ## 🚧 What is missing
 
@@ -56,16 +56,17 @@ curl http://localhost:8090/chain
 - **Full chain validation.** `CheckChain` checks only the previous-hash links; it does not recompute each block's hash or its proof of work.
 - **Mining can fail.** With difficulty 1 and a nonce limit of 50, a block has about a 4% chance ((15/16)^50) of not finding a valid hash; `/mine` then answers 500 with `nonce limit exceeded`.
 - **Configuration.** Difficulty, nonce limit and port are fixed in `main.go`.
-- **Concurrency.** The HTTP handlers share the chain without a lock, so concurrent `/mine` requests can race.
 - `ErrEmptyBlockData` is declared in `miner.go` but never used.
 
 ## 📝 Tests
 
-Run the tests:
+Run the tests, with the race detector:
 
 ```bash
-go test ./...
+go test -race ./...
 ```
+
+`TestServer_Concurrent` in `server_test.go` sends `/mine` and `/chain` at the same time.
 
 Run the tests with coverage and open the HTML report:
 
